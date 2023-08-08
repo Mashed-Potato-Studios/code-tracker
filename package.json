@@ -6,9 +6,9 @@
     "dist",
     "index.d.ts"
   ],
-  "main": "./dist/focus-mode.umd.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/focus-mode.js",
-  "types": "./index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     "types": "./index.d.ts",
     "import": "./dist/focus-mode.js",

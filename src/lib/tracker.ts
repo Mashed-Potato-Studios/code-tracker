@@ -1,54 +1,56 @@
-class CodeTracker {
-  private totalLinesOfCode: number;
-  private files: { [file: string]: number };
+import type { IFileTracker, ICodeTracker, ICodeMetrics } from '../types'
+
+class CodeTracker implements ICodeTracker {
+  private totalLinesOfCode: number
+  private files: FileTracker
 
   constructor() {
-    this.totalLinesOfCode = 0;
-    this.files = {};
+    this.totalLinesOfCode = 0
+    this.files = {}
   }
 
   trackFile(file: string, linesOfCode: number) {
     if (this.files[file]) {
-      console.warn(`File "${file}" is already being tracked.`);
-      return;
+      console.warn(`File "${file}" is already being tracked.`)
+      return
     }
 
-    this.files[file] = linesOfCode;
-    this.totalLinesOfCode += linesOfCode;
+    this.files[file] = linesOfCode
+    this.totalLinesOfCode += linesOfCode
   }
 
   updateFile(file: string, newLinesOfCode: number) {
     if (!this.files[file]) {
-      console.warn(`File "${file}" is not being tracked.`);
-      return;
+      console.warn(`File "${file}" is not being tracked.`)
+      return
     }
 
-    const previousLinesOfCode = this.files[file];
-    this.totalLinesOfCode -= previousLinesOfCode;
-    this.totalLinesOfCode += newLinesOfCode;
+    const previousLinesOfCode = this.files[file]
+    this.totalLinesOfCode -= previousLinesOfCode
+    this.totalLinesOfCode += newLinesOfCode
 
-    this.files[file] = newLinesOfCode;
+    this.files[file] = newLinesOfCode
   }
 
   removeFile(file: string) {
     if (!this.files[file]) {
-      console.warn(`File "${file}" is not being tracked.`);
-      return;
+      console.warn(`File "${file}" is not being tracked.`)
+      return
     }
 
-    this.totalLinesOfCode -= this.files[file];
-    delete this.files[file];
+    this.totalLinesOfCode -= this.files[file]
+    delete this.files[file]
   }
 
   getTotalLinesOfCode(): number {
-    return this.totalLinesOfCode;
+    return this.totalLinesOfCode
   }
 
   getFiles(): { [file: string]: number } {
-    return this.files;
+    return this.files
   }
 }
 
 // Singleton pattern to ensure there's only one instance of CodeTracker
-const codeTrackerInstance = new CodeTracker();
-export default codeTrackerInstance;
+const codeTrackerInstance = new CodeTracker()
+export default codeTrackerInstance
