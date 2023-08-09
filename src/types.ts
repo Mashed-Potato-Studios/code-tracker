@@ -5,12 +5,20 @@ export interface IFileTracker {
   [file: string]: number
 }
 
-export interface ICodeTracker {
+/**
+ * @name ICodeTracker - Rename to ITrackingStrategy
+ */
+export interface ITrackingStrategy {
   trackFile(file: string, linesOfCode: number): void
   updateFile(file: string, newLinesOfCode: number): void
   removeFile(file: string): void
   getTotalLinesOfCode(): number
   getFiles(): IFileTracker
+}
+
+export interface IStorageStrategy {
+  save(files: IFileTracker, totalLinesOfCode: number): void
+  load(): { files: IFileTracker, totalLinesOfCode: number } | null
 }
 
 export interface ICodeTrackerCallbackFn {
