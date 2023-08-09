@@ -1,24 +1,26 @@
-import codeTrackerInstance from "./lib/tracker";
+import codeTrackerInstance from './lib/tracker'
+import type { ICodeMetrics } from './types'
 // Utility functions to use with the CodeTracker class
 
 export function trackCodeUsage(file: string, linesOfCode: number) {
-  codeTrackerInstance.trackFile(file, linesOfCode);
+  codeTrackerInstance.trackFile(file, linesOfCode)
 }
 
 export function updateCodeUsage(file: string, newLinesOfCode: number) {
-  codeTrackerInstance.updateFile(file, newLinesOfCode);
+  codeTrackerInstance.updateFile(file, newLinesOfCode)
 }
 
 export function removeCodeUsage(file: string) {
-  codeTrackerInstance.removeFile(file);
+  codeTrackerInstance.removeFile(file)
 }
 
-export function getCodeMetrics(): {
-  totalLinesOfCode: number,
-  files: { [file: string]: number },
-} {
+export function getCodeMetrics(): ICodeMetrics {
+  totalLinesOfCode: number
+  files: FileTracker
+}
+{
   return {
     totalLinesOfCode: codeTrackerInstance.getTotalLinesOfCode(),
     files: codeTrackerInstance.getFiles(),
-  };
+  }
 }
