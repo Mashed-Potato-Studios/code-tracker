@@ -1,4 +1,4 @@
-import codeTrackerInstance from './lib/tracker'
+import { codeTrackerInstance } from './lib/tracker'
 import type { ICodeMetrics } from './types'
 // Utility functions to use with the CodeTracker class
 
