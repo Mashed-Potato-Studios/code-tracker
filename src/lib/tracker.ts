@@ -7,7 +7,7 @@ import type {
 } from '../types'
 import { DefaultTrackingStrategy, LocalStorageStrategy } from './strategies/default'
 
-class CodeTracker implements ICodeTracker {
+export class CodeTracker implements ICodeTracker {
   // private totalLinesOfCode: number
   // private files: IFileTracker
   // private callbacks: ICodeTrackerCallbackFn
@@ -110,4 +110,4 @@ const codeTrackerInstance = new CodeTracker({
     console.log(`File "${file}" removed with ${linesOfCode} lines of code`)
   },
 })
-export default codeTrackerInstance
+export codeTrackerInstance
