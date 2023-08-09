@@ -13,6 +13,13 @@ export interface ICodeTracker {
   getFiles(): IFileTracker
 }
 
+export interface ICodeTrackerCallbackFn {
+  onFileAdded?: (file: string, linesOfCode: number) => void;
+  onFileUpdated?: (file: string, newLinesOfCode: number, oldLinesOfCode: number) => void;
+    onFileRemoved?: (file: string, linesOfCode: number) => void;
+    // onTotalLinesOfCodeChanged?: (newTotalLinesOfCode: number, oldTotalLinesOfCode: number) => void;
+}
+
 export interface ICodeMetrics {
   totalLinesOfCode: number
   files: IFileTracker
