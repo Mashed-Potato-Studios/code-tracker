@@ -13,8 +13,9 @@ class CodeTracker implements ICodeTracker {
 
   trackFile(file: string, linesOfCode: number) {
     if (this.files[file]) {
-      console.warn(`File "${file}" is already being tracked.`)
-      return
+      // console.warn(`File "${file}" is already being tracked.`)
+      throw new Error(`File "${file}" is already being tracked.`)
+
     }
 
     this.files[file] = linesOfCode
@@ -23,12 +24,15 @@ class CodeTracker implements ICodeTracker {
     if (this.callbacks.onFileAdded) {
       this.callbacks.onFileAdded(file, linesOfCode)
     }
+
+    return this;
   }
 
   updateFile(file: string, newLinesOfCode: number) {
     if (!this.files[file]) {
-      console.warn(`File "${file}" is not being tracked.`)
-      return
+      // console.warn(`File "${file}" is not being tracked.`)
+        throw new Error(`File "${file}" is not being tracked.`)
+
     }
 
     const previousLinesOfCode = this.files[file]
@@ -40,12 +44,14 @@ class CodeTracker implements ICodeTracker {
     if (this.callbacks.onFileUpdated) {
         this.callbacks.onFileUpdated(file, newLinesOfCode, previousLinesOfCode)
     }
+
+    return this;
   }
 
   removeFile(file: string) {
     if (!this.files[file]) {
-      console.warn(`File "${file}" is not being tracked.`)
-      return
+      // console.warn(`File "${file}" is not being tracked.`)
+        throw new Error(`File "${file}" is not being tracked.`)
     }
 
     const linesOfCode = this.files[file]
@@ -55,6 +61,8 @@ class CodeTracker implements ICodeTracker {
     if (this.callbacks.onFileRemoved) {
         this.callbacks.onFileRemoved(file, linesOfCode)
     }
+
+    return this;
   }
 
   getTotalLinesOfCode(): number {
