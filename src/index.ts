@@ -15,10 +15,6 @@ export function removeCodeUsage(file: string) {
 }
 
 export function getCodeMetrics(): ICodeMetrics {
-  totalLinesOfCode: number
-  files: FileTracker
-}
-{
   return {
     totalLinesOfCode: codeTrackerInstance.getTotalLinesOfCode(),
     files: codeTrackerInstance.getFiles(),

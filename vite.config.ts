@@ -1,16 +1,19 @@
 import { defineConfig } from 'vite'
+import * as path from "path";
 
 export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'FocusMode',
+      name: 'CodeTracker',
+      formats: ['es', 'cjs']
     },
     rollupOptions: {
       external: [],
       output: {
-        format: 'umd',
-        name: 'FocusMode',
+        globals: {
+
+        }
       }
     }
   }
