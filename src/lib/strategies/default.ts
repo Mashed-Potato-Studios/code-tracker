@@ -1,4 +1,4 @@
-import type { ITrackingStrategy, IStorageStrategy } from '../../types'
+import type {ITrackingStrategy, IStorageStrategy, IFileTracker} from '../../types'
 export class DefaultTrackingStrategy implements ITrackingStrategy {
   // Default tracking logic
   private totalLinesOfCode: number = 0
@@ -33,7 +33,7 @@ export class DefaultTrackingStrategy implements ITrackingStrategy {
   }
 }
 
-class LocalStorageStrategy implements IStorageStrategy {
+export class LocalStorageStrategy implements IStorageStrategy {
   // Logic to save and load from local storage
   private readonly storageKey: string = 'codeTrackerData'
 
