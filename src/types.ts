@@ -12,8 +12,8 @@ export interface ITrackingStrategy {
   trackFile(file: string, linesOfCode: number): void
   updateFile(file: string, newLinesOfCode: number): void
   removeFile(file: string): void
-  getTotalLinesOfCode(): number
-  getFiles(): IFileTracker
+  getTotalLinesOfCode(filePath: string): number
+  getFiles( ): IFileTracker
 }
 
 export interface IStorageStrategy {
