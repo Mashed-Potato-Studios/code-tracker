@@ -10,7 +10,7 @@ export class CodeTracker {
   private totalLinesOfCode: number
   private files: IFileTracker
   private callbacks: ICodeTrackerCallbackFn
-  private trackingStrategy: ITrackingStrategy
+  private trackingStrategy: DefaultTrackingStrategy
   private storageStrategy?: IStorageStrategy
 
   constructor(
@@ -20,7 +20,7 @@ export class CodeTracker {
   ) {
     this.totalLinesOfCode = 0
     this.files = {}
-    this.trackingStrategy = trackingStrategy || new DefaultTrackingStrategy()
+    this.trackingStrategy = new DefaultTrackingStrategy()
     this.storageStrategy = storageStrategy
     this.callbacks = callbacks || {}
 
@@ -30,7 +30,7 @@ export class CodeTracker {
     }
   }
 
-  trackFile(file: string, linesOfCode: number): CodeTracker {
+  async trackFile(file: string, linesOfCode: number): CodeTracker {
     if (!this.files[file]) {
       // console.warn(`File "${file}" is already being tracked.`)
       throw new Error(`File "${file}" is already being tracked.`)
@@ -46,7 +46,7 @@ export class CodeTracker {
 
     // this.files[file] = linesOfCode
     // this.totalLinesOfCode += linesOfCode
-    this.trackingStrategy.trackFile(file, linesOfCode)
+    await this.trackingStrategy.trackFile(file)
     this.storageStrategy?.save(this.getFiles(), this.getTotalLinesOfCode())
 
     if (this.callbacks.onFileAdded) {
@@ -56,7 +56,7 @@ export class CodeTracker {
     return this
   }
 
-  updateFile(file: string, newLinesOfCode: number) {
+  async updateFile(file: string, newLinesOfCode: number) {
     if (!this.files[file]) {
       // console.warn(`File "${file}" is not being tracked.`)
       throw new Error(`File "${file}" is not being tracked.`)
@@ -66,7 +66,7 @@ export class CodeTracker {
       throw new Error('File name must be a non-empty string.')
     }
 
-    this.trackingStrategy.updateFile(file, newLinesOfCode)
+    await this.trackingStrategy.updateFile(file)
 
     //     const previousLinesOfCode = this.files[file]
     //     this.totalLinesOfCode -= previousLinesOfCode
@@ -87,23 +87,26 @@ export class CodeTracker {
       throw new Error(`File "${file}" is not being tracked.`)
     }
 
-    const linesOfCode = this.files[file]
-    this.totalLinesOfCode -= this.files[file]
-    delete this.files[file]
+    this.trackingStrategy.removeFile(file)
+    // const linesOfCode = this.files[file]
+    // this.totalLinesOfCode -= this.files[file]
+    // delete this.files[file]
 
-    if (this.callbacks.onFileRemoved) {
-      this.callbacks.onFileRemoved(file, linesOfCode)
-    }
+
+
+    // if (this.callbacks.onFileRemoved) {
+    //   this.callbacks.onFileRemoved(file, linesOfCode)
+    // }
 
     return this
   }
 
   getTotalLinesOfCode(): number {
-    return this.totalLinesOfCode
+    return this.trackingStrategy.getTotalLinesOfCode()
   }
 
   getFiles(): { [file: string]: number } {
-    return this.files
+    return this.trackingStrategy.getFiles()
   }
 
   getFileDetails(file: string): number | null {
