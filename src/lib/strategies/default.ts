@@ -1,31 +1,74 @@
 import type {ITrackingStrategy, IStorageStrategy, IFileTracker} from '../../types'
+import * as fs from "fs";
+import chokidar from "chokidar";
 export class DefaultTrackingStrategy implements ITrackingStrategy {
   // Default tracking logic
   private totalLinesOfCode: number = 0
   private files: IFileTracker = {}
+  private watchers = {} as { [file: string]: chokidar.FSWatcher };
 
-  trackFile(file: string, linesOfCode: number): void {
-    // Implementation of adding a file
-    this.files[file] = linesOfCode
-    this.totalLinesOfCode += linesOfCode
+  async trackFile(filePath: string): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      // Implementation of adding a file
+      await this.updateFile(filePath)
+
+      const watcher = chokidar.watch(filePath, {
+        persistent: true,
+        ignoreInitial: true,
+        awaitWriteFinish: true,
+      })
+        watcher.on('change', async () => {
+            await this.updateFile(filePath)
+        })
+        // const lines = data.split('\n');
+
+      // this.files[filePath] = linesOfCode
+      // this.totalLinesOfCode += linesOfCode
+      resolve()
+    })
   }
 
-  updateFile(file: string, newLinesOfCode: number): void {
+  updateFile(filePath: string): Promise<void> {
     // Implementation of updating a file
-    const oldLinesOfCode = this.files[file]
-    this.totalLinesOfCode -= oldLinesOfCode
-    this.totalLinesOfCode += newLinesOfCode
-    this.files[file] = newLinesOfCode
+    return new Promise((resolve, reject) => {
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) throw err;
+        console.log(data);
+
+        // Determine number of lines of code
+        const lines = data.split('\n');
+        const linesOfCode = lines.filter(line => {
+          const trimmedLine = line.trim()
+            return trimmedLine !== '' && !trimmedLine.startsWith('//')
+        }).length
+
+
+        this.files[filePath] = linesOfCode
+      console.log(`The file ${filePath} has ${linesOfCode} lines of code`)
+      resolve()
+    })
+    })
+
   }
 
-  removeFile(file: string): void {
-    // Implementation of removing a file
-    this.totalLinesOfCode -= this.files[file]
-    delete this.files[file]
+  removeFile(filePath: string): void {
+  if (!this.files[filePath]) {
+    console.warn(`File "${filePath}" is not being tracked.`);
+    return;
   }
+
+  // Close the watcher if you have one
+  this.watchers[filePath]?.close();
+
+  // Subtract the lines of code from the total
+  this.totalLinesOfCode -= this.files[filePath];
+
+  // Remove the file from tracking
+  delete this.files[filePath];
+}
 
   getFiles(): IFileTracker {
-    return this.files
+    return {...this.files}
   }
 
   getTotalLinesOfCode(): number {
