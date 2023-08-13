@@ -10,6 +10,7 @@
     "type": "git",
     "url": "https://github.com/Mashed-Potato-Studios/code-tracker"
   },
+  "homepage": "https://code-tracker-docs.netlify.app/",
   "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/code-tracker.js",
