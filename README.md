@@ -22,10 +22,10 @@ npm install code-tracker
 Here's a simple example of how to use CodeTracker:
 
 ```typescript
-import codeTracker, { trackCodeUsage, getCodeMetrics } from 'code-tracker';
+import { trackCodeUsage, getCodeMetrics } from 'code-tracker';
 
 // Track a file
-trackCodeUsage('example.ts', 200);
+trackCodeUsage('example.ts');
 
 // Get code metrics
 const metrics = getCodeMetrics();

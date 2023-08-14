@@ -30,7 +30,7 @@ export class CodeTracker {
     }
   }
 
-  async trackFile(file: string, linesOfCode: number): CodeTracker {
+  async trackFile(file: string): Promise<CodeTracker> {
     if (!this.files[file]) {
       // console.warn(`File "${file}" is already being tracked.`)
       throw new Error(`File "${file}" is already being tracked.`)
@@ -40,18 +40,18 @@ export class CodeTracker {
       throw new Error('File name must be a non-empty string.')
     }
 
-    if (typeof linesOfCode !== 'number' || linesOfCode < 0) {
-      throw new Error(`Invalid lines of code: ${linesOfCode}`)
-    }
+    // if (typeof linesOfCode !== 'number' || linesOfCode < 0) {
+    //   throw new Error(`Invalid lines of code: ${linesOfCode}`)
+    // }
 
     // this.files[file] = linesOfCode
     // this.totalLinesOfCode += linesOfCode
     await this.trackingStrategy.trackFile(file)
     this.storageStrategy?.save(this.getFiles(), this.getTotalLinesOfCode())
 
-    if (this.callbacks.onFileAdded) {
-      this.callbacks.onFileAdded(file, linesOfCode)
-    }
+    // if (this.callbacks.onFileAdded) {
+    //   this.callbacks.onFileAdded(file, linesOfCode)
+    // }
 
     return this
   }
@@ -115,7 +115,7 @@ export class CodeTracker {
 
   trackFiles(files: { [file: string]: number }): CodeTracker {
     for (const file in files) {
-      this.trackFile(file, files[file]);
+      this.trackFile(file);
     }
     return this;
   }
