@@ -56,7 +56,7 @@ export class CodeTracker {
     return this
   }
 
-  async updateFile(file: string, newLinesOfCode: number) {
+  async updateFile(file: string): Promise<CodeTracker> {
     if (!this.files[file]) {
       // console.warn(`File "${file}" is not being tracked.`)
       throw new Error(`File "${file}" is not being tracked.`)

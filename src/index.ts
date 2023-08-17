@@ -2,12 +2,12 @@ import { codeTrackerInstance } from './lib/tracker'
 import type { ICodeMetrics } from './types'
 // Utility functions to use with the CodeTracker class
 
-export function trackCodeUsage(file: string, linesOfCode: number) {
-  codeTrackerInstance.trackFile(file, linesOfCode)
+export async function trackCodeUsage(file: string) {
+  await codeTrackerInstance.trackFile(file)
 }
 
-export function updateCodeUsage(file: string, newLinesOfCode: number) {
-  codeTrackerInstance.updateFile(file, newLinesOfCode)
+export async function updateCodeUsage(file: string) {
+  await codeTrackerInstance.updateFile(file)
 }
 
 export function removeCodeUsage(file: string) {
