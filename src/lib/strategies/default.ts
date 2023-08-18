@@ -9,6 +9,14 @@ export class DefaultTrackingStrategy implements ITrackingStrategy {
 
   async trackFile(filePath: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
+
+      const currentWorkingDirectory = process.cwd()
+        const absoluteFilePath = `${currentWorkingDirectory}/${filePath}`
+
+        if (this.files[filePath]) {
+            throw new Error(`File "${filePath}" is already being tracked.`)
+        }
+
       // Implementation of adding a file
       await this.updateFile(filePath)
 
