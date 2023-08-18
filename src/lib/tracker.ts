@@ -31,7 +31,7 @@ export class CodeTracker {
   }
 
   async trackFile(file: string): Promise<CodeTracker> {
-    if (!this.files[file]) {
+    if (this.files[file]) {
       // console.warn(`File "${file}" is already being tracked.`)
       throw new Error(`File "${file}" is already being tracked.`)
     }
